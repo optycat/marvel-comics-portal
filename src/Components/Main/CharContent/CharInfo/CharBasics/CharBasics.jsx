@@ -1,14 +1,14 @@
-import CharList from './CharList/CharList';
+import CharBasicsItem from './CharBasicsItem/CharBasicsItem';
 
-import './charInfo.scss';
+import './charBasics.scss';
 
-const CharInfo = () => {
+const charBasics = () => {
     return (
-        <div className="char__info">
-            <CharList/>
-            {/* <CharInfo/> */}
+        <div className="char__basics">
+            <img src="img/thor.jpeg" alt="abyss" />
+            <CharBasicsItem />
         </div>
-    );
+    ); 
 }
 
-export default CharInfo;
+export default charBasics;
