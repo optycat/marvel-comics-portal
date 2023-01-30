@@ -1,20 +1,19 @@
 
 import './randomCharBlock.scss';
 
-const RandomCharBlock = () => {
+const RandomCharBlock = ({ name, description, homepage, wiki, thumbnail }) => {
+    console.log(name);
     return (
         <div className="randomchar__block">
-            <img src="img/thor.jpeg" alt="Random character" className="randomchar__img" />
+            <img src={thumbnail} alt="Random character" className="randomchar__img" />
             <div className="randomchar__info">
-                <p className="randomchar__name">Thor</p>
-                <p className="randomchar__descr">
-                    As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate...
-                </p>
+                <p className="randomchar__name">{name}</p>
+                <p className="randomchar__descr">{description}</p>
                 <div className="randomchar__btns">
-                    <a href="#" class="button button__main">
-                        <div class="inner">homepage</div>
+                    <a href={homepage} className="button button__main">
+                        <div className="inner">homepage</div>
                     </a>
-                    <a href="#" className="button button__secondary">
+                    <a href={wiki} className="button button__secondary">
                         <div className="inner">Wiki</div>
                     </a>
                 </div>
