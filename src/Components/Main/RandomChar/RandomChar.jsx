@@ -4,10 +4,13 @@ import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 import MarvelServise from '../../../Servises/MarvelServise';
 
 // import RandomCharBlock from './RandomCharBlock/RandomCharBlock';
-import RandomCharStatic from './RandomCharStatic/RandomCharStatic';
+// import RandomCharStatic from './RandomCharStatic/RandomCharStatic';
 
 import './randomChar.scss';
 import './RandomCharBlock/randomCharBlock.scss';
+import './RandomCharStatic/randomCharStatic.scss';
+
+import mjolnir from '../../../image/mjolnir.png';
 
 class RandomChar extends Component {
     constructor(props) {
@@ -18,10 +21,19 @@ class RandomChar extends Component {
     state = {
         char: {},
         loading: true,
-        error: false
+        error: false,
+        imgNone: false
     }
 
     marvelServise = new MarvelServise();
+
+    componentDidMount() {
+        this.updateChar();
+    }
+
+    componentWillUnmount() {
+
+    }
 
     onCharLoaded = (char) => {
         this.setState({ char, loading: false, error: false });
@@ -31,28 +43,55 @@ class RandomChar extends Component {
         this.setState({ error: true, loading: false });
     }
 
+    onCharImgNone = (imgState) => {
+        this.setState({ imgNone: imgState });
+    }
+
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         this.marvelServise
             .getChar(id)
             .then(this.onCharLoaded)
             .catch(this.onErrorOcupeted);
+        this.marvelServise.getCharImageStatus(id)
+            .then(answer => {
+                if (answer === 'image_not_available') {
+                    this.onCharImgNone(true);
+                } else {
+                    this.onCharImgNone(false);
+                }
+            });
     }
 
     render() {
-        const { char, loading, error } = this.state;
+        const { char, loading, error, imgNone } = this.state;
 
         const errorMassage = error ? <ErrorMassage /> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <View char={char} /> : null;
+        const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
 
         return (
             <div className='randomchar'>
                 {errorMassage}
                 {spinner}
                 {content}
-                {/* {loading ? <Spinner /> : <View char={char} />} */}
-                <RandomCharStatic />
+                <div className="randomchar__static">
+                    <p className="randomchar__title">
+                        Random character for today!<br />
+                        Do you want to get to know him better?
+                    </p>
+                    <p className="randomchar__title">
+                        Or choose another one
+                    </p>
+                    <button className="button button__main"
+                        onClick={this.updateChar}>
+                        <div className="inner">try it</div>
+                    </button>
+                    <img src={mjolnir} alt="mjolnir"
+                        className="randomchar__decoration"
+                        style={imgStyle} />
+                </div>
             </div>
         );
     }
