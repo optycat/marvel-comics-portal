@@ -3,12 +3,7 @@ import Spinner from '../../Spinner/Spinner';
 import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 import MarvelServise from '../../../Servises/MarvelServise';
 
-// import RandomCharBlock from './RandomCharBlock/RandomCharBlock';
-// import RandomCharStatic from './RandomCharStatic/RandomCharStatic';
-
 import './randomChar.scss';
-import './RandomCharBlock/randomCharBlock.scss';
-import './RandomCharStatic/randomCharStatic.scss';
 
 import mjolnir from '../../../image/mjolnir.png';
 
@@ -38,7 +33,6 @@ class RandomChar extends Component {
 
     onCharLoaded = (char) => {
         this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail)});
-        // this.onCharImgNone();
     }
 
     onErrorOcupeted = () => {
