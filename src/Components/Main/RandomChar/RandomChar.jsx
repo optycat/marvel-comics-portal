@@ -104,6 +104,8 @@ const View = ({ char, imgNone}) => {
                 return !charData ? '#' : charData;
             case 'wiki':
                 return !charData ? '#' : charData;
+            default:
+                return '#';
         }
     }
 

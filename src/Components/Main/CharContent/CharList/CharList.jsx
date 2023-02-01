@@ -1,7 +1,7 @@
 import CharGrid from './CharGrid/CharGrid';
 
 const CharList = () => {
-    return (
+    return ( 
         <div className="char__list">
             <CharGrid />
             <button className="button button__main button__long">

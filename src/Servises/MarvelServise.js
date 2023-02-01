@@ -14,18 +14,17 @@ class MarvelServise {
     }
     getAllChars = async () => {
         const answer = await this.getResourse(`${this._apiBase}characters?limit=9&offset=210&${this._apiKey}`);
-        return answer.data.results.map(this._intiateCharacter);
+        return answer.data.results.map(this._intiateCharacters);
     }
     getChar = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);
         return this._intiateCharacter(answer.data.results[0]);
     }
-
     getCharImageStatus = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        const _answer = answer//.data.results[0].thumbnail.path.split('/');
-        return _answer//[_answer.length - 1];
+        return answer;
     }
+
     _intiateCharacter = (char) => {
         return ({
             name: char.name,
@@ -33,6 +32,16 @@ class MarvelServise {
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
             wiki: char.urls[1].url
+        });
+    }
+    _intiateCharacters = (char) => {
+        return ({
+            name: char.name,
+            description: char.description,
+            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+            homepage: char.urls[0].url,
+            wiki: char.urls[1].url,
+            id: char.id
         });
     }
 }
