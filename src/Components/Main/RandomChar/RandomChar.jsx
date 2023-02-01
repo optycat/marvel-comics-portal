@@ -13,11 +13,6 @@ import './RandomCharStatic/randomCharStatic.scss';
 import mjolnir from '../../../image/mjolnir.png';
 
 class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
-
     state = {
         char: {},
         loading: true,
@@ -31,20 +26,28 @@ class RandomChar extends Component {
         this.updateChar();
     }
 
-    componentWillUnmount() {
+    // componentDidUpdate() {
+    //     const { char } = this.state;
+    //     const imgStatus = char.thumbnail.split('/');
+    //     return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
+    // }
 
-    }
+    // componentWillUnmount() {
+
+    // }
 
     onCharLoaded = (char) => {
-        this.setState({ char, loading: false, error: false });
+        this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail)});
+        // this.onCharImgNone();
     }
 
     onErrorOcupeted = () => {
         this.setState({ error: true, loading: false });
     }
 
-    onCharImgNone = (imgState) => {
-        this.setState({ imgNone: imgState });
+    onCharImgNone = (thumbnail) => {
+        const imgStatus = thumbnail.split('/');
+        return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
     }
 
     updateChar = () => {
@@ -53,14 +56,6 @@ class RandomChar extends Component {
             .getChar(id)
             .then(this.onCharLoaded)
             .catch(this.onErrorOcupeted);
-        this.marvelServise.getCharImageStatus(id)
-            .then(answer => {
-                if (answer === 'image_not_available') {
-                    this.onCharImgNone(true);
-                } else {
-                    this.onCharImgNone(false);
-                }
-            });
     }
 
     render() {
@@ -68,8 +63,7 @@ class RandomChar extends Component {
 
         const errorMassage = error ? <ErrorMassage /> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <View char={char} /> : null;
-        const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
+        const content = !(loading || error) ? <View char={char} imgNone={imgNone} /> : null;
 
         return (
             <div className='randomchar'>
@@ -89,16 +83,16 @@ class RandomChar extends Component {
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir"
-                        className="randomchar__decoration"
-                        style={imgStyle} />
+                        className="randomchar__decoration" />
                 </div>
             </div>
         );
     }
 }
 
-const View = ({ char }) => {
+const View = ({ char, imgNone}) => {
     const { name, description, homepage, wiki, thumbnail } = char;
+    const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
 
     const onCharDataEmpty = (charData, charDataType) => {
         switch (charDataType) {
@@ -121,7 +115,10 @@ const View = ({ char }) => {
 
     return (
         <div className="randomchar__block">
-            <img src={onCharDataEmpty(thumbnail, 'thumbnail')} alt="Random character" className="randomchar__img" />
+            <img style={imgStyle}
+                src={onCharDataEmpty(thumbnail, 'thumbnail')} 
+                alt="Random character" 
+                className="randomchar__img" />
             <div className="randomchar__info">
                 <p className="randomchar__name">{onCharDataEmpty(name, 'name')}</p>
                 <p className="randomchar__descr">{onCharDataEmpty(description, 'description')}</p>

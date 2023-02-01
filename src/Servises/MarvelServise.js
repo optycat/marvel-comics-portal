@@ -23,8 +23,8 @@ class MarvelServise {
 
     getCharImageStatus = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);
-        const _answer = answer.data.results[0].thumbnail.path.split('/');
-        return _answer[_answer.length - 1];
+        const _answer = answer//.data.results[0].thumbnail.path.split('/');
+        return _answer//[_answer.length - 1];
     }
     _intiateCharacter = (char) => {
         return ({
