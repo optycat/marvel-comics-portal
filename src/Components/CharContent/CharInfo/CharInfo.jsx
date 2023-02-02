@@ -60,7 +60,13 @@ class CharInfo extends Component {
         const skeleton = char || loading || error ? null : <Skeleton />
         const errorMassage = error ? <ErrorMassage /> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error || !char) ? <><CharBasics char={char} imgNone={imgNone}/> <CharComics/></> : null;
+        const content = !(loading || error || !char) 
+            ? <>
+                <CharBasics char={char} imgNone={imgNone}/>
+                <div className="char__descr">{char.description}</div>
+                <CharComics comics={char.comics}/>
+            </>
+            : null;
 
 
         return (

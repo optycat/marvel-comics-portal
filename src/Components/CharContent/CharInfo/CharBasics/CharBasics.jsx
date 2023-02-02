@@ -1,10 +1,12 @@
 import './charBasics.scss';
 
 const charBasics = ({ char, imgNone }) => {
-    const { name, wiki, thumbnail, homepage, description } = char;
+    const { name, wiki, thumbnail, homepage } = char;
+    const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
     return (
         <div className="char__basics">
-            <img src={thumbnail} alt={name} />
+            <img src={thumbnail} alt={name} 
+                style={imgStyle}/>
             <div>
                 <div className="char__info-name">{name}</div>
                 <div className="char__btns">
@@ -16,7 +18,6 @@ const charBasics = ({ char, imgNone }) => {
                     </a>
                 </div>
             </div>
-            <div className="char__descr">{description}</div>
         </div>
     );
 }
