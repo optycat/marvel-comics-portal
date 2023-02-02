@@ -6,13 +6,14 @@ import Spinner from '../../Spinner/Spinner';
 import './charList.scss';
 
 class CharList extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
     state = {
         chars: [],
         loading: true,
-        error: false
+        error: false,
+        active: null
     }
 
     marvelServise = new MarvelServise();
@@ -29,8 +30,6 @@ class CharList extends Component {
     }
 
     onCharsLoaded = (chars) => {
-        // const newChars = chars.map((item => item = { imgNone: this.onCharImgNone(item), ...item }));
-        // console.log(newChars);
         this.setState({ chars, loading: false, error: false });
     }
 
@@ -43,13 +42,17 @@ class CharList extends Component {
         return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
     }
 
+    isActive = (id) => {
+        this.setState({ active: id });
+    }
+
     render() {
         if (this.state.error === true) return <ErrorMassage />
         if (this.state.loading === true) return <Spinner />
         return (
             <div className="char__list">
                 <ul className="char__grid">
-                    <CharItem chars={this.state.chars} onCharSelected={this.props.onCharSelected} />
+                    <CharItem chars={this.state.chars} onCharSelected={this.props.onCharSelected} active={this.state.active} isActive={this.isActive} />
                 </ul>
                 <button className="button button__main button__long">
                     <div className="inner">load more</div>
@@ -59,17 +62,19 @@ class CharList extends Component {
     }
 }
 
-const CharItem = ({ chars, onCharSelected}) => {
-    // const onActive = () => {
-    //     return 0
-    // }
+const CharItem = ({ chars, onCharSelected, active, isActive }) => {
+
     return chars.map((char) => {
         const { name, thumbnail, id } = char;
-        // const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
+        const handleClick = () => {
+            isActive(id);
+            onCharSelected(id);
+        }
+        
         return (
-            <li className="char__item"
+            <li className={active === id ? "char__item char__item_selected" : "char__item"}
                 key={id}
-                onClick={() => onCharSelected(id)}>
+                onClick={handleClick}>
                 <img src={thumbnail} alt={name} />
                 <div className="char__name">{name}</div>
             </li>

@@ -12,6 +12,7 @@ class CharContent extends Component {
 
     onCharSelected = (id) => {
         this.setState({ selectedChar: id });
+        console.log(this)
     }
 
     render() {
