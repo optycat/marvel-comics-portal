@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import MarvelServise from '../../../../../Servises/MarvelServise';
-import ErrorMassage from '../../../../ErrorMassage/ErrorMassage';
-import Spinner from '../../../../Spinner/Spinner';
+import MarvelServise from '../../../../Servises/MarvelServise';
+import ErrorMassage from '../../../ErrorMassage/ErrorMassage';
+import Spinner from '../../../Spinner/Spinner';
 
 import './charGrid.scss';
 

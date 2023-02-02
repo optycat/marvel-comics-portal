@@ -1,11 +1,11 @@
 import { Component } from 'react';
-import Spinner from '../../Spinner/Spinner';
-import ErrorMassage from '../../ErrorMassage/ErrorMassage';
-import MarvelServise from '../../../Servises/MarvelServise';
+import Spinner from '../Spinner/Spinner';
+import ErrorMassage from '../ErrorMassage/ErrorMassage';
+import MarvelServise from '../../Servises/MarvelServise';
 
 import './randomChar.scss';
 
-import mjolnir from '../../../image/mjolnir.png';
+import mjolnir from '../../image/mjolnir.png';
 
 class RandomChar extends Component {
     state = {
@@ -32,7 +32,7 @@ class RandomChar extends Component {
     // }
 
     onCharLoaded = (char) => {
-        this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail)});
+        this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
     }
 
     onErrorOcupeted = () => {
@@ -44,8 +44,13 @@ class RandomChar extends Component {
         return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
     }
 
+    onLoading = () => {
+        this.setState({ loading: true });
+    }
+
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onLoading();
         this.marvelServise
             .getChar(id)
             .then(this.onCharLoaded)
@@ -84,7 +89,7 @@ class RandomChar extends Component {
     }
 }
 
-const View = ({ char, imgNone}) => {
+const View = ({ char, imgNone }) => {
     const { name, description, homepage, wiki, thumbnail } = char;
     const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
 
@@ -112,8 +117,8 @@ const View = ({ char, imgNone}) => {
     return (
         <div className="randomchar__block">
             <img style={imgStyle}
-                src={onCharDataEmpty(thumbnail, 'thumbnail')} 
-                alt="Random character" 
+                src={onCharDataEmpty(thumbnail, 'thumbnail')}
+                alt="Random character"
                 className="randomchar__img" />
             <div className="randomchar__info">
                 <p className="randomchar__name">{onCharDataEmpty(name, 'name')}</p>
