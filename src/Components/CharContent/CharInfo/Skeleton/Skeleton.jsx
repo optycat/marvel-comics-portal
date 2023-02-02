@@ -1,8 +1,9 @@
-import './pulse.scss';
+import './skeleton.scss';
 
-const Pulse = () => {
+const Skeleton = () => {
     return (
-        <>
+        <div className="skeleton">
+            <p className="char__select">Please select a character to see information</p>
             <div className="pulse skeleton__header">
                 <div className="pulse skeleton__circle"></div>
                 <div className="pulse skeleton__mini"></div>
@@ -10,8 +11,8 @@ const Pulse = () => {
             <div className="pulse skeleton__block"></div>
             <div className="pulse skeleton__block"></div>
             <div className="pulse skeleton__block"></div>
-        </>
+        </div>
     );
 }
 
-export default Pulse;
+export default Skeleton;

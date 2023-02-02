@@ -1,21 +1,79 @@
+import { Component } from 'react';
+
+import MarvelServise from '../../../Servises/MarvelServise';
 import CharBasics from './CharBasics/CharBasics';
 import CharComics from './CharComics/CharComics';
-import Sceleton from './Sceleton/Sceleton';
+import Skeleton from './Skeleton/Skeleton';
+import Spinner from '../../Spinner/Spinner';
+import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 
 import './charInfo.scss';
 
-const CharInfo = () => {
-    return (
-        <div className="char__info">
-            <CharBasics />
-            <div className="char__descr">
-                In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
+class CharInfo extends Component {
+    state = {
+        char: null,
+        loading: false,
+        error: false,
+        imgNone: false
+    }
+
+    marvelServise = new MarvelServise();
+
+    componentDidMount() {
+        this.updateChar();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.charId !== prevProps.charId) this.updateChar();
+    }
+
+    updateChar = () => {
+        const { charId } = this.props;
+        if (!charId) return;
+        this.onLoading();
+        this.marvelServise
+            .getChar(charId)
+            .then(this.onCharLoaded)
+            .catch(this.onErrorOcupeted);
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
+    }
+
+    onErrorOcupeted = () => {
+        this.setState({ error: true, loading: false });
+    }
+
+    onCharImgNone = (thumbnail) => {
+        const imgStatus = thumbnail.split('/');
+        return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
+    }
+
+    onLoading = () => {
+        this.setState({ loading: true });
+    }
+
+    render() {
+        const { char, loading, error, imgNone } = this.state;
+
+        const skeleton = char || loading || error ? null : <Skeleton />
+        const errorMassage = error ? <ErrorMassage /> : null;
+        const spinner = loading ? <Spinner /> : null;
+        const content = !(loading || error || !char) ? <><CharBasics char={char} imgNone={imgNone}/> <CharComics/></> : null;
+
+
+        return (
+            <div className="char__info">
+                {skeleton}
+                {errorMassage}
+                {spinner}
+                {content}
+                {/* <CharBasics />
+                <CharComics /> */}
             </div>
-            <CharComics />
-            <p className="char__select">Please select a character to see information</p>
-            <Sceleton />
-        </div>
-    );
+        );
+    }
 }
 
 export default CharInfo;

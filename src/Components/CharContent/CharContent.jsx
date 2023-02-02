@@ -17,8 +17,8 @@ class CharContent extends Component {
     render() {
         return (
             <div className="char__content">
-                <CharList onCharSelected={this.onCharSelected}/>
-                <CharInfo />
+                <CharList onCharSelected={this.onCharSelected} />
+                <CharInfo charId={this.state.selectedChar} />
             </div>
         );
     }
