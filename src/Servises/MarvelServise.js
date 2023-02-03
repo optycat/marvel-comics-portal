@@ -5,6 +5,10 @@ class MarvelServise {
 
     _apiKey = 'apikey=7f34be55b5354ddee9579868f375a6bf';
 
+    _apiOfset = 210;
+
+    _apiLimit = 9;
+
     getResourse = async (url) => {
         let res = await fetch(url);
         if (!res.ok) {
@@ -13,12 +17,17 @@ class MarvelServise {
         return await res.json();
     }
     getAllChars = async () => {
-        const answer = await this.getResourse(`${this._apiBase}characters?limit=9&offset=210&${this._apiKey}`);
+        const answer = await this.getResourse(`${this._apiBase}characters?limit=${this._apiLimit}&offset=${this._apiOfset}&${this._apiKey}`);
         return answer.data.results.map(this._intiateCharacter);
     }
     getChar = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);
         return this._intiateCharacter(answer.data.results[0]);
+    }
+    getMoreChars = async (times) => {
+        const newApiOfset = this._apiOfset + this._apiLimit * times;
+        const answer = await this.getResourse(`${this._apiBase}characters?limit=${this._apiLimit}&offset=${newApiOfset}&${this._apiKey}`);
+        return answer.data.results.map(this._intiateCharacter);
     }
     getCharImageStatus = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);

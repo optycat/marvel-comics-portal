@@ -10,7 +10,8 @@ class CharList extends Component {
         chars: [],
         loading: true,
         error: false,
-        active: null
+        active: null,
+        times: 1,
     }
 
     marvelServise = new MarvelServise();
@@ -38,6 +39,20 @@ class CharList extends Component {
         this.setState({ active: id });
     }
 
+    onLoadMore = () => {
+        this.marvelServise
+            .getMoreChars(this.state.times)
+            .then(this.onAdditionalCharsLoaded)
+            .catch(this.onErrorOcupeted);
+    }
+
+    onAdditionalCharsLoaded = (additionalChars) => {
+        this.setState({ chars: [...this.state.chars, ...additionalChars], 
+                        loading: false, 
+                        error: false, 
+                        times: this.state.times + 1})
+    }
+
     render() {
         if (this.state.error) return <ErrorMassage />
         if (this.state.loading) return <Spinner />
@@ -49,7 +64,8 @@ class CharList extends Component {
                         active={this.state.active}
                         isActive={this.isActive} />
                 </ul>
-                <button className="button button__main button__long">
+                <button className="button button__main button__long"
+                    onClick={this.onLoadMore}>
                     <div className="inner">load more</div>
                 </button>
             </div>
