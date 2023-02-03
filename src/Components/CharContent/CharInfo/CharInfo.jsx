@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import MarvelServise from '../../../Servises/MarvelServise';
+import MarvelServise from '../../../servises/MarvelServise';
 import CharBasics from './CharBasics/CharBasics';
 import CharComics from './CharComics/CharComics';
 import Skeleton from './Skeleton/Skeleton';
@@ -75,8 +75,6 @@ class CharInfo extends Component {
                 {errorMassage}
                 {spinner}
                 {content}
-                {/* <CharBasics />
-                <CharComics /> */}
             </div>
         );
     }

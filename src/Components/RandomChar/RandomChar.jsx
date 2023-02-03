@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Spinner from '../Spinner/Spinner';
 import ErrorMassage from '../ErrorMassage/ErrorMassage';
-import MarvelServise from '../../Servises/MarvelServise';
+import MarvelServise from '../../servises/MarvelServise';
 
 import './randomChar.scss';
 
@@ -20,16 +20,6 @@ class RandomChar extends Component {
     componentDidMount() {
         this.updateChar();
     }
-
-    // componentDidUpdate() {
-    //     const { char } = this.state;
-    //     const imgStatus = char.thumbnail.split('/');
-    //     return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
-    // }
-
-    // componentWillUnmount() {
-
-    // }
 
     onCharLoaded = (char) => {
         this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
