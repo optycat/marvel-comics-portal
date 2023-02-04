@@ -11,24 +11,39 @@ class CharList extends Component {
         loading: true,
         error: false,
         active: null,
-        times: 1,
+        offset: 210,
+        newItemsLoading: false,
+        charEnded: false,
     }
 
     marvelServise = new MarvelServise();
 
     componentDidMount() {
-        this.updateGrid();
+        this.onRequest();
     }
 
-    updateGrid = () => {
+    onRequest = (offset) => {
+        this.onNewItemsLoading();
         this.marvelServise
-            .getAllChars()
-            .then(this.onCharsLoaded)
+            .getChars(offset)
+            .then((res) => this.onCharsLoaded(res, offset))
             .catch(this.onErrorOcupeted);
+    } 
+
+    onCharsLoaded = (additionalChars, offsetProp) => {
+        let ended = additionalChars.length < 9 ? true : false;
+
+        this.setState(({chars, offset}) => ({
+            chars: offsetProp ? [...chars, ...additionalChars] : additionalChars,
+            loading: false,
+            newItemsLoading: false,
+            offset: offset + 9,
+            charEnded: ended
+        }));
     }
 
-    onCharsLoaded = (chars) => {
-        this.setState({ chars, loading: false, error: false });
+    onNewItemsLoading = () => {
+        this.setState({ newItemsLoading: true });
     }
 
     onErrorOcupeted = () => {
@@ -39,33 +54,22 @@ class CharList extends Component {
         this.setState({ active: id });
     }
 
-    onLoadMore = () => {
-        this.marvelServise
-            .getMoreChars(this.state.times)
-            .then(this.onAdditionalCharsLoaded)
-            .catch(this.onErrorOcupeted);
-    }
-
-    onAdditionalCharsLoaded = (additionalChars) => {
-        this.setState({ chars: [...this.state.chars, ...additionalChars], 
-                        loading: false, 
-                        error: false, 
-                        times: this.state.times + 1})
-    }
-
     render() {
-        if (this.state.error) return <ErrorMassage />
-        if (this.state.loading) return <Spinner />
+        const { error, loading, offset, active, chars, newItemsLoading, charEnded } = this.state;
+        if (error) return <ErrorMassage />
+        if (loading) return <Spinner />
         return (
             <div className="char__list">
                 <ul className="char__grid">
-                    <CharItem chars={this.state.chars} 
+                    <CharItem chars={chars}
                         onCharSelected={this.props.onCharSelected}
-                        active={this.state.active}
+                        active={active}
                         isActive={this.isActive} />
                 </ul>
                 <button className="button button__main button__long"
-                    onClick={this.onLoadMore}>
+                    disabled={newItemsLoading}
+                    style={{'display': charEnded ? 'none' : 'block' }}
+                    onClick={() => this.onRequest(offset)}>
                     <div className="inner">load more</div>
                 </button>
             </div>

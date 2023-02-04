@@ -148,4 +148,29 @@ input::-webkit-inner-spin-button {
     &:hover {
         transform: translateY(-5px);
     }
+
+    &:disabled {
+
+
+        &.button__main::before,
+        &.button__main::after {
+            background-color: $dark;
+            opacity: .5;
+        }
+
+        .inner {
+            background-color: $dark;
+            opacity: .5;
+
+            &::before {
+                border-color: $dark transparent;
+                opacity: .5;
+            }
+
+            &::after {
+                border-color: $dark transparent;
+                opacity: .5;
+            }
+        }
+    }
 }

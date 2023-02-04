@@ -7,7 +7,7 @@ class MarvelServise {
 
     _apiOfset = 210;
 
-    _apiLimit = 9;
+    // _apiLimit = 9;
 
     getResourse = async (url) => {
         let res = await fetch(url);
@@ -16,17 +16,13 @@ class MarvelServise {
         }
         return await res.json();
     }
-    getAllChars = async () => {
-        const answer = await this.getResourse(`${this._apiBase}characters?limit=${this._apiLimit}&offset=${this._apiOfset}&${this._apiKey}`);
-        return answer.data.results.map(this._intiateCharacter);
-    }
     getChar = async (id) => {
         const answer = await this.getResourse(`${this._apiBase}characters/${id}?${this._apiKey}`);
         return this._intiateCharacter(answer.data.results[0]);
     }
-    getMoreChars = async (times) => {
-        const newApiOfset = this._apiOfset + this._apiLimit * times;
-        const answer = await this.getResourse(`${this._apiBase}characters?limit=${this._apiLimit}&offset=${newApiOfset}&${this._apiKey}`);
+    getChars = async (offset = this._apiOfset) => {
+        // const newApiOfset = this._apiOfset + this._apiLimit * times;
+        const answer = await this.getResourse(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
         return answer.data.results.map(this._intiateCharacter);
     }
     getCharImageStatus = async (id) => {
