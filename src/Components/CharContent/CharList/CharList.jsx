@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import { PropTypes } from 'prop-types';
+
 import MarvelServise from '../../../servises/MarvelServise';
 import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 import Spinner from '../../Spinner/Spinner';
@@ -34,7 +36,7 @@ class CharList extends Component {
         let ended = additionalChars.length < 9 ? true : false;
 
         this.setState(({chars, offset}) => ({
-            chars: offsetProp ? [...chars, ...additionalChars] : additionalChars,
+            chars: offsetProp ? [...chars, ...additionalChars] : additionalChars,//[...chars, ...additionalChars],
             loading: false,
             newItemsLoading: false,
             offset: offset + 9,
@@ -95,6 +97,10 @@ const CharItem = ({ chars, onCharSelected, active, isActive }) => {
             </li>
         );
     });
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func.isRequired
 }
 
 export default CharList;

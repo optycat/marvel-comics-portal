@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { PropTypes } from 'prop-types';
 
 import MarvelServise from '../../../servises/MarvelServise';
 import CharBasics from './CharBasics/CharBasics';
@@ -78,6 +79,10 @@ class CharInfo extends Component {
             </div>
         );
     }
+}
+
+CharInfo.propTypes = {
+    charId: PropTypes.number
 }
 
 export default CharInfo;
