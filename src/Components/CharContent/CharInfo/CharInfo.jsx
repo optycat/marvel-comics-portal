@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 
 import MarvelServise from '../../../servises/MarvelServise';
@@ -15,34 +15,12 @@ const CharInfo = ({ charId }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [imgNone, setImgNone] = useState(false);
-    // state = {
-    //     char: null,
-    //     loading: false,
-    //     error: false,
-    //     imgNone: false
-    // }
 
     const marvelServise = new MarvelServise();
 
-    // const prevCharId = useRef(0);
-
-    // useEffect(() => prevCharId.current = charId, [charId]);
-
     useEffect(() => updateChar(charId), [charId]);
-    // componentDidMount() {
-    //     this.updateChar();
-    // }
-
-    // useEffect(() => {
-    //     if (charId !== prevCharId.current) updateChar();
-    // }, [charId]);
-
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.charId !== prevProps.charId) this.updateChar();
-    // }
 
     const updateChar = (charId) => {
-        // const { charId } = this.props;
         if (!charId) return;
         onLoading();
         marvelServise
@@ -56,13 +34,11 @@ const CharInfo = ({ charId }) => {
         setLoading(loading => false);
         setError(error => false);
         setImgNone(imgNone => onCharImgNone(char.thumbnail));
-        // this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
     }
 
     const onErrorOcupeted = () => {
         setLoading(loading => false);
         setError(error => true);
-        // this.setState({ error: true, loading: false });
     }
 
     const onCharImgNone = (thumbnail) => {
@@ -71,11 +47,6 @@ const CharInfo = ({ charId }) => {
     }
 
     const onLoading = () => setLoading(loading => true);
-
-    // onLoading = () => {        
-    //     this.setState({ loading: true });
-    // }
-
 
     const skeleton = char || loading || error ? null : <Skeleton />
     const errorMassage = error ? <ErrorMassage /> : null;
