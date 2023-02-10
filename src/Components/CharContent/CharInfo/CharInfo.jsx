@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 
 import MarvelServise from '../../../servises/MarvelServise';
@@ -10,75 +10,93 @@ import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 
 import './charInfo.scss';
 
-class CharInfo extends Component {
-    state = {
-        char: null,
-        loading: false,
-        error: false,
-        imgNone: false
-    }
+const CharInfo = ({ charId }) => {
+    const [char, setChar] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [imgNone, setImgNone] = useState(false);
+    // state = {
+    //     char: null,
+    //     loading: false,
+    //     error: false,
+    //     imgNone: false
+    // }
 
-    marvelServise = new MarvelServise();
+    const marvelServise = new MarvelServise();
 
-    componentDidMount() {
-        this.updateChar();
-    }
+    // const prevCharId = useRef(0);
 
-    componentDidUpdate(prevProps) {
-        if(this.props.charId !== prevProps.charId) this.updateChar();
-    }
+    // useEffect(() => prevCharId.current = charId, [charId]);
 
-    updateChar = () => {
-        const { charId } = this.props;
+    useEffect(() => updateChar(charId), [charId]);
+    // componentDidMount() {
+    //     this.updateChar();
+    // }
+
+    // useEffect(() => {
+    //     if (charId !== prevCharId.current) updateChar();
+    // }, [charId]);
+
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.charId !== prevProps.charId) this.updateChar();
+    // }
+
+    const updateChar = (charId) => {
+        // const { charId } = this.props;
         if (!charId) return;
-        this.onLoading();
-        this.marvelServise
+        onLoading();
+        marvelServise
             .getChar(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onErrorOcupeted);
+            .then(onCharLoaded)
+            .catch(onErrorOcupeted);
     }
 
-    onCharLoaded = (char) => {
-        this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
+    const onCharLoaded = (char) => {
+        setChar(char);
+        setLoading(loading => false);
+        setError(error => false);
+        setImgNone(imgNone => onCharImgNone(char.thumbnail));
+        // this.setState({ char, loading: false, error: false, imgNone: this.onCharImgNone(char.thumbnail) });
     }
 
-    onErrorOcupeted = () => {
-        this.setState({ error: true, loading: false });
+    const onErrorOcupeted = () => {
+        setLoading(loading => false);
+        setError(error => true);
+        // this.setState({ error: true, loading: false });
     }
 
-    onCharImgNone = (thumbnail) => {
+    const onCharImgNone = (thumbnail) => {
         const imgStatus = thumbnail.split('/');
         return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
     }
 
-    onLoading = () => {
-        this.setState({ loading: true });
-    }
+    const onLoading = () => setLoading(loading => true);
 
-    render() {
-        const { char, loading, error, imgNone } = this.state;
-
-        const skeleton = char || loading || error ? null : <Skeleton />
-        const errorMassage = error ? <ErrorMassage /> : null;
-        const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error || !char) 
-            ? <>
-                <CharBasics char={char} imgNone={imgNone}/>
-                <div className="char__descr">{char.description}</div>
-                <CharComics comics={char.comics}/>
-            </>
-            : null;
+    // onLoading = () => {        
+    //     this.setState({ loading: true });
+    // }
 
 
-        return (
-            <div className="char__info">
-                {skeleton}
-                {errorMassage}
-                {spinner}
-                {content}
-            </div>
-        );
-    }
+    const skeleton = char || loading || error ? null : <Skeleton />
+    const errorMassage = error ? <ErrorMassage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = !(loading || error || !char)
+        ? <>
+            <CharBasics char={char} imgNone={imgNone} />
+            <div className="char__descr">{char.description}</div>
+            <CharComics comics={char.comics} />
+        </>
+        : null;
+
+    return (
+        <div className="char__info">
+            {skeleton}
+            {errorMassage}
+            {spinner}
+            {content}
+        </div>
+    );
+
 }
 
 CharInfo.propTypes = {

@@ -28,7 +28,10 @@ const CharList = (props) => {
 
     const marvelServise = new MarvelServise();
 
-    useEffect(() => onRequest(), []);
+    useEffect(() => {
+        onRequest();
+        props.onCharSelected(chars[0]);
+    }, []);
     // componentDidMount() {
     //     this.onRequest();
     //     console.log(this)
@@ -72,11 +75,16 @@ const CharList = (props) => {
 
     // this.setState({ active: id });
     // const itemRefs = useRef([]);
-
-    const isActive = (id, i) => {
+    
+    const handleClick = (id) => {
         setActive(active => id);
-        // itemRefs.current[i].focus();//.current[id]);//.focus();
+        props.onCharSelected(id);
     }
+
+    // const isActive = (id, i) => {
+    //     setActive(active => id);
+    //     // itemRefs.current[i].focus();//.current[id]);//.focus();
+    // }
     // render() {
     // const { error, loading, offset, active, chars, newItemsLoading, charEnded } = this.state;
     if (error) return <ErrorMassage />
@@ -87,16 +95,12 @@ const CharList = (props) => {
                 {
                     chars.map((char, i) => {
                         const { name, thumbnail, id } = char;
-                        const handleClick = () => {
-                            isActive(id);
-                            props.onCharSelected(id);
-                        }
 
                         return (
                             <li className={active === id ? "char__item char__item_selected" : "char__item"}
                                 key={id}
                                 // ref={el => itemRefs.current[i] = el}
-                                onClick={handleClick}>
+                                onClick={() => handleClick(id)}>
                                 <img src={thumbnail} alt={name} />
                                 <div className="char__name">{name}</div>
                             </li>
