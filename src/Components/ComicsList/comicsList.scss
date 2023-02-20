@@ -1,0 +1,57 @@
+@import '../../Style/variables.scss';
+
+.comicslist {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 1fr;
+    align-items: center;
+    background-color: $dark;
+    justify-items: center;
+
+    &__title {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: -0.045em;
+        color: #FFFFFF;
+    }
+
+    &__decoration {
+        grid-column-start: 4;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+}
+
+.comicscontainer {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 60px;
+    }
+
+    &__image {
+        width: 100%;
+        height: 354px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, .25);
+    }
+
+    &__item {
+        margin: 45px 0 10px;
+    }
+
+    &__title {
+        padding: 10px 0 5px;
+        color: #000000;
+    }
+
+    &__price {
+        color: #00000099;
+    }
+}
