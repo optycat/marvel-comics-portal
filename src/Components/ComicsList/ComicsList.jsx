@@ -4,9 +4,9 @@ import ErrorMassage from "../ErrorMassage/ErrorMassage";
 import Spinner from "../Spinner/Spinner";
 import useMarvelServise from "../../servises/MarvelServise";
 
+import ComicsListStatic from "./ComicsListStatic/ComicsListStatic";
+
 import './comicsList.scss';
-import avengers from '../../image/Avengers.png';
-import avengersLogo from '../../image/Avengers_logo.png';
 
 const ComicsList = () => {
 
@@ -15,7 +15,7 @@ const ComicsList = () => {
     const [newItemsLoading, setNewItemsLoading] = useState(false);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const { error, loading, clearError, getComics } = useMarvelServise();
+    const { error, loading, getComics } = useMarvelServise();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -23,11 +23,10 @@ const ComicsList = () => {
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemsLoading(false) : setNewItemsLoading(true);
-        getComics(offset).then((res) => onComicsLoaded(res));
+        getComics(offset).then((res) => onComicsLoaded(res, offset));
     }
 
     const onComicsLoaded = (additionalComics) => {
-        clearError();
         let ended = additionalComics.length < 8 ? true : false;
         setComics(comics => [...comics, ...additionalComics]);
         setNewItemsLoading(newItemsLoading => false);
@@ -35,33 +34,37 @@ const ComicsList = () => {
         setComicsEnded(comicsEnded => ended);
     }
 
-    const errorMassage = error ? <ErrorMassage /> : null;
-    const spinner = loading && !newItemsLoading ? <Spinner /> : null;
-    const content = !(loading || error) ?
-        <ul className="comicscontainer__grid">
-            {
-                comics.map((comic, i) => {
-                    const { id, thumbnail, title, price } = comic;
-                    return (
-                        <li className="comicscontainer__item" key={id}>
-                            <img src={thumbnail} alt={title} className="comicscontainer__image" />
-                            <div className="comicscontainer__title">{title}</div>
-                            <div className="comicscontainer__price">{price}</div>
-                        </li>
-                    );
-                })
-            }
-        </ul> : null;
+    if (error) return (
+        <div className="comicscontainer">
+            <ComicsListStatic />
+            <ErrorMassage />
+        </div>
+    );
+
+    if (loading && !newItemsLoading) return (
+        <div className="comicscontainer">
+            <ComicsListStatic />
+            <Spinner />
+        </div>
+    );
+
     return (
         <div className="comicscontainer">
-            <div className="comicslist">
-                <img src={avengers} alt="Avengers" className="" />
-                <h3 className="comicslist__title">New comics every week! <br />Stay tuned!</h3>
-                <img src={avengersLogo} alt="Avengers" className="comicslist__decoration" />
-            </div>
-            {errorMassage}
-            {spinner}
-            {content}
+            <ComicsListStatic />
+            <ul className="comicscontainer__grid">
+                {
+                    comics.map((comic, i) => {
+                        const { id, thumbnail, title, price } = comic;
+                        return (
+                            <li className="comicscontainer__item" key={id}>
+                                <img src={thumbnail} alt={title} className="comicscontainer__image" />
+                                <div className="comicscontainer__title">{title}</div>
+                                <div className="comicscontainer__price">{price}</div>
+                            </li>
+                        );
+                    })
+                }
+            </ul>
             <button className="button button__main button__long"
                 disabled={newItemsLoading}
                 style={{ 'display': comicsEnded ? 'none' : 'block' }}

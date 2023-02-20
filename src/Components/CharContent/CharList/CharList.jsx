@@ -23,10 +23,10 @@ const CharList = (props) => {
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemsLoading(false) : setNewItemsLoading(true);
-        getChars(offset).then((res) => onCharsLoaded(res, offset));
+        getChars(offset).then((res) => onCharsLoaded(res));
     }
 
-    const onCharsLoaded = (additionalChars, offsetProp) => {
+    const onCharsLoaded = (additionalChars) => {
         let ended = additionalChars.length < 9 ? true : false;
         setChars(chars => [...chars, ...additionalChars]);
         setNewItemsLoading(newItemsLoading => false);

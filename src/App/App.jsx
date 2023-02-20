@@ -12,10 +12,10 @@ function App() {
     <div className='app'>
       <Header />
       <main>
-        {/* <ErrorBoundary> */}
-          {/* <RandomChar /> */}
-        {/* </ErrorBoundary> */}
-          {/* <CharContent /> */}
+        {/* <ErrorBoundary>
+          <RandomChar />
+        </ErrorBoundary>
+          <CharContent /> */}
         <ComicsList />
       </main>
       {/* <BGDecoration /> */}

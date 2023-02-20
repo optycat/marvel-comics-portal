@@ -1,0 +1,23 @@
+@import '../../../style/variables.scss';
+
+.comicslist {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 1fr;
+    align-items: center;
+    background-color: $dark;
+    justify-items: center;
+
+    &__title {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: -0.045em;
+        color: #FFFFFF;
+    }
+
+    &__decoration {
+        grid-column-start: 4;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+}
