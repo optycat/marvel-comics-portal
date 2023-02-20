@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 
-import MarvelServise from '../../../servises/MarvelServise';
+import useMarvelServise from '../../../servises/MarvelServise';
 import ErrorMassage from '../../ErrorMassage/ErrorMassage';
 import Spinner from '../../Spinner/Spinner';
 
@@ -9,43 +9,29 @@ import './charList.scss';
 
 const CharList = (props) => {
     const [chars, setChars] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [active, setActive] = useState(null);
     const [offset, setOffset] = useState(210);
     const [newItemsLoading, setNewItemsLoading] = useState(false);
     const [charEnded, setCharEnded] = useState(false);
 
-    const marvelServise = new MarvelServise();
+    const { error, loading, getChars } = useMarvelServise();
 
     useEffect(() => {
-        onRequest();
+        onRequest(offset, true);
         props.onCharSelected(chars[0]);
     }, []);
 
-    const onRequest = (offset) => {
-        onNewItemsLoading();
-        marvelServise
-            .getChars(offset)
-            .then((res) => onCharsLoaded(res, offset))
-            .catch(onErrorOcupeted);
+    const onRequest = (offset, initial) => {
+        initial ? setNewItemsLoading(false) : setNewItemsLoading(true);
+        getChars(offset).then((res) => onCharsLoaded(res, offset));
     }
 
     const onCharsLoaded = (additionalChars, offsetProp) => {
         let ended = additionalChars.length < 9 ? true : false;
-
         setChars(chars => [...chars, ...additionalChars]);
-        setLoading(loading => false);
         setNewItemsLoading(newItemsLoading => false);
         setOffset(offset => offset + 9);
         setCharEnded(charEnded => ended);
-    }
-
-    const onNewItemsLoading = () => setNewItemsLoading(true);
-
-    const onErrorOcupeted = () => {
-        setError(true);
-        setLoading(false);
     }
 
     const handleClick = (id) => {
@@ -54,7 +40,7 @@ const CharList = (props) => {
     }
 
     if (error) return <ErrorMassage />
-    if (loading) return <Spinner />
+    if (loading && !newItemsLoading) return <Spinner />
     return (
         <div className="char__list">
             <ul className="char__grid">

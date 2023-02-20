@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 
-import MarvelServise from '../../../servises/MarvelServise';
+import useMarvelServise from '../../../servises/MarvelServise';
 import CharBasics from './CharBasics/CharBasics';
 import CharComics from './CharComics/CharComics';
 import Skeleton from './Skeleton/Skeleton';
@@ -12,48 +12,27 @@ import './charInfo.scss';
 
 const CharInfo = ({ charId }) => {
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [imgNone, setImgNone] = useState(false);
 
-    const marvelServise = new MarvelServise();
+    const { loading, error, getChar, clearError } = useMarvelServise();
 
     useEffect(() => updateChar(charId), [charId]);
 
     const updateChar = (charId) => {
+        clearError();
         if (!charId) return;
-        onLoading();
-        marvelServise
-            .getChar(charId)
-            .then(onCharLoaded)
-            .catch(onErrorOcupeted);
+        getChar(charId).then(onCharLoaded);
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(loading => false);
-        setError(error => false);
-        setImgNone(imgNone => onCharImgNone(char.thumbnail));
     }
-
-    const onErrorOcupeted = () => {
-        setLoading(loading => false);
-        setError(error => true);
-    }
-
-    const onCharImgNone = (thumbnail) => {
-        const imgStatus = thumbnail.split('/');
-        return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
-    }
-
-    const onLoading = () => setLoading(loading => true);
 
     const skeleton = char || loading || error ? null : <Skeleton />
     const errorMassage = error ? <ErrorMassage /> : null;
     const spinner = loading ? <Spinner /> : null;
     const content = !(loading || error || !char)
         ? <>
-            <CharBasics char={char} imgNone={imgNone} />
+            <CharBasics char={char} />
             <div className="char__descr">{char.description}</div>
             <CharComics comics={char.comics} />
         </>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Spinner from '../Spinner/Spinner';
 import ErrorMassage from '../ErrorMassage/ErrorMassage';
-import MarvelServise from '../../servises/MarvelServise';
+import useMarvelServise from '../../servises/MarvelServise';
 
 import View from './View/View';
 
@@ -11,43 +11,42 @@ import mjolnir from '../../image/mjolnir.png';
 
 const RandomChar = () => {
     const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [imgNone, setImgNone] = useState(false);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(false);
+    // const [imgNone, setImgNone] = useState(false);
 
-    const marvelServise = new MarvelServise();
+    const { loading, error, getChar, clearError } = useMarvelServise();
 
     useEffect(() => updateChar(), []);
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(loading => false);
-        setError(error => false);
-        setImgNone(imgNone => onCharImgNone(char.thumbnail));
+        // setLoading(loading => false);
+        // setError(error => false);
+        // setImgNone(imgNone => onCharImgNone(char.thumbnail));
     }
 
-    const onErrorOcupeted = () => {
-        setLoading(loading => false);
-        setError(error => true);
-    }
+    // const onErrorOcupeted = () => {
+    //     setLoading(loading => false);
+    //     setError(error => true);
+    // }
 
-    const onCharImgNone = (thumbnail) => {
-        const imgStatus = thumbnail.split('/');
-        return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
-    }
+    // const onCharImgNone = (thumbnail) => {
+    //     const imgStatus = thumbnail.split('/');
+    //     return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
+    // }
 
     const updateChar = () => {
+        clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        setLoading(loading => true);
-        marvelServise
-            .getChar(id)
-            .then(onCharLoaded)
-            .catch(onErrorOcupeted);
+        // setLoading(loading => true);
+        getChar(id).then(onCharLoaded);
+        // .catch(onErrorOcupeted);
     }
 
     const errorMassage = error ? <ErrorMassage /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error) ? <View char={char} imgNone={imgNone} /> : null;
+    const content = !(loading || error) ? <View char={char} /> : null;
 
     return (
         <div className='randomchar'>

@@ -1,7 +1,6 @@
 
-const View = ({ char, imgNone }) => {
-    const { name, description, homepage, wiki, thumbnail } = char;
-    const imgStyle = imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' };
+const View = ({ char }) => {
+    const { name, description, homepage, wiki, thumbnail, imgNone } = char;
 
     const onCharDataEmpty = (charData, charDataType) => {
         switch (charDataType) {
@@ -26,7 +25,7 @@ const View = ({ char, imgNone }) => {
 
     return (
         <div className="randomchar__block">
-            <img style={imgStyle}
+            <img style={imgNone ? { objectFit: 'contain' } : { objectFit: 'cover' }}
                 src={onCharDataEmpty(thumbnail, 'thumbnail')}
                 alt="Random character"
                 className="randomchar__img" />
