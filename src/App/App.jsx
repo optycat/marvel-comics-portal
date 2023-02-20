@@ -3,6 +3,7 @@ import RandomChar from '../Components/RandomChar/RandomChar';
 import CharContent from '../Components/CharContent/CharContent';
 import BGDecoration from '../Components/BGDecoration/BGDecoration';
 import ErrorBoundary from '../Components/ErrorBoundary/ErrorBoundary';
+import ComicsList from '../Components/ComicsList/ComicsList';
 
 import './app.scss';
 
@@ -15,6 +16,7 @@ function App() {
           <RandomChar />
         </ErrorBoundary>
           <CharContent />
+        <ComicsList />
       </main>
       <BGDecoration />
     </div>

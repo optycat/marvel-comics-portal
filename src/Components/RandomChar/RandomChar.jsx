@@ -11,9 +11,6 @@ import mjolnir from '../../image/mjolnir.png';
 
 const RandomChar = () => {
     const [char, setChar] = useState({});
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(false);
-    // const [imgNone, setImgNone] = useState(false);
 
     const { loading, error, getChar, clearError } = useMarvelServise();
 
@@ -21,27 +18,12 @@ const RandomChar = () => {
 
     const onCharLoaded = (char) => {
         setChar(char);
-        // setLoading(loading => false);
-        // setError(error => false);
-        // setImgNone(imgNone => onCharImgNone(char.thumbnail));
     }
-
-    // const onErrorOcupeted = () => {
-    //     setLoading(loading => false);
-    //     setError(error => true);
-    // }
-
-    // const onCharImgNone = (thumbnail) => {
-    //     const imgStatus = thumbnail.split('/');
-    //     return imgStatus[imgStatus.length - 1] === 'image_not_available.jpg';
-    // }
 
     const updateChar = () => {
         clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        // setLoading(loading => true);
         getChar(id).then(onCharLoaded);
-        // .catch(onErrorOcupeted);
     }
 
     const errorMassage = error ? <ErrorMassage /> : null;
