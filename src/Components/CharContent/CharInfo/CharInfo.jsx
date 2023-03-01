@@ -23,9 +23,7 @@ const CharInfo = ({ charId }) => {
         getChar(charId).then(onCharLoaded);
     }
 
-    const onCharLoaded = (char) => {
-        setChar(char);
-    }
+    const onCharLoaded = (char) => setChar(char); 
 
     const skeleton = char || loading || error ? null : <Skeleton />
     const errorMassage = error ? <ErrorMassage /> : null;

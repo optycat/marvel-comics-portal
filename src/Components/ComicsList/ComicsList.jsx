@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import ErrorMassage from "../ErrorMassage/ErrorMassage";
 import Spinner from "../Spinner/Spinner";
@@ -51,26 +52,29 @@ const ComicsList = () => {
     return (
         <div className="comicscontainer">
             <ComicsListStatic />
-            <ul className="comicscontainer__grid">
-                {
-                    comics.map((comic, i) => {
-                        const { id, thumbnail, title, price } = comic;
-                        return (
-                            <li className="comicscontainer__item" key={id}>
-                                <img src={thumbnail} alt={title} className="comicscontainer__image" />
-                                <div className="comicscontainer__title">{title}</div>
-                                <div className="comicscontainer__price">{price}</div>
-                            </li>
-                        );
-                    })
-                }
-            </ul>
-            <button className="button button__main button__long"
-                disabled={newItemsLoading}
-                style={{ 'display': comicsEnded ? 'none' : 'block' }}
-                onClick={() => onRequest(offset)}>
-                <div className="inner">load more</div>
-            </button>
+
+                <ul className="comicscontainer__grid">
+                    {
+                        comics.map((comic, i) => {
+                            const { id, thumbnail, title, price } = comic;
+                            return (
+                                <li className="comicscontainer__item" key={i}>
+                                    <Link to={`${id}`}>
+                                        <img src={thumbnail} alt={title} className="comicscontainer__image" />
+                                        <p className="comicscontainer__title">{title}</p>
+                                        <p className="comicscontainer__price">{price}</p>
+                                    </Link>
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+                <button className="button button__main button__long"
+                    disabled={newItemsLoading}
+                    style={{ 'display': comicsEnded ? 'none' : 'block' }}
+                    onClick={() => onRequest(offset)}>
+                    <div className="inner">load more</div>
+                </button>
         </div>
     );
 }

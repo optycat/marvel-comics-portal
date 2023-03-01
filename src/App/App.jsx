@@ -1,25 +1,23 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import Header from '../Components/Header/Header';
-import RandomChar from '../Components/RandomChar/RandomChar';
-import CharContent from '../Components/CharContent/CharContent';
-import BGDecoration from '../Components/BGDecoration/BGDecoration';
-import ErrorBoundary from '../Components/ErrorBoundary/ErrorBoundary';
-import ComicsList from '../Components/ComicsList/ComicsList';
+import { MainPage, ComicsPage, Page404, ComicBookPage } from '../Components/Pages';
 
 import './app.scss';
 
 function App() {
   return (
-    <div className='app'>
-      <Header />
-      <main>
-        {/* <ErrorBoundary>
-          <RandomChar />
-        </ErrorBoundary>
-          <CharContent /> */}
-        <ComicsList />
-      </main>
-      {/* <BGDecoration /> */}
-    </div>
+    <Router>
+      <div className='app'>
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="comics" element={<ComicsPage />} />
+          <Route path="comics/:comicId" element={<ComicBookPage />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
