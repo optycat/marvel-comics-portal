@@ -1,7 +1,7 @@
-import ErrorMassage from "../ErrorMassage/ErrorMassage"
+import ErrorMassage from "../Components/ErrorMassage/ErrorMassage"
 import { Link } from "react-router-dom"
 
-import BGDecoration from "../BGDecoration/BGDecoration"
+import BGDecoration from "../Components/BGDecoration/BGDecoration"
 
 const Page404 = () => {
     return (

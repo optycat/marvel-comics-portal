@@ -1,7 +1,7 @@
-import RandomChar from "../RandomChar/RandomChar";
-import CharContent from "../CharContent/CharContent";
-import BGDecoration from "../BGDecoration/BGDecoration";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import RandomChar from "../Components/RandomChar/RandomChar";
+import CharContent from "../Components/CharContent/CharContent";
+import BGDecoration from "../Components/BGDecoration/BGDecoration";
+import ErrorBoundary from "../Components/ErrorBoundary/ErrorBoundary";
 
 const MainPage = () => {
     return (
