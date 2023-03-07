@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import './charBasics.scss';
 
-const charBasics = ({ char }) => {
+const charBasics = memo(({ char }) => {
     const { name, wiki, thumbnail, homepage, imgNone } = char;
     return (
         <div className="char__basics">
@@ -19,6 +20,6 @@ const charBasics = ({ char }) => {
             </div>
         </div>
     );
-}
+});
 
 export default charBasics;

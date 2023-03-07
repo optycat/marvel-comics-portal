@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import CharList from './CharList/CharList';
 import CharInfo from './CharInfo/CharInfo';
@@ -10,7 +10,8 @@ const CharContent = () => {
 
     const [selectedChar, setChar] = useState(null);
 
-    const onCharSelected = (id) => setChar(id);
+    const onCharSelected = useCallback((id) => setChar(id), []);
+
 
     return (
         <div className="char__content">
