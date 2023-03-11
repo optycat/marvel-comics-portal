@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import { PropTypes } from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import useMarvelServise from '../../../servises/MarvelServise';
 import ErrorMassage from '../../ErrorMassage/ErrorMassage';
@@ -43,22 +44,28 @@ const CharList = (props) => {
     if (loading && !newItemsLoading) return <Spinner />
     return (
         <div className="char__list">
-            <ul className="char__grid">
+            <TransitionGroup className="char__grid" component={'ul'}>
                 {
                     chars.map((char, i) => {
-                        const { name, thumbnail, id } = char;
-
+                        const { name, thumbnail, id, nodeRef } = char;
                         return (
-                            <li className={active === id ? "char__item char__item_selected" : "char__item"}
+                            <CSSTransition
                                 key={id}
-                                onClick={() => handleClick(id)}>
-                                <img src={thumbnail} alt={name} />
-                                <div className="char__name">{name}</div>
-                            </li>
+                                nodeRef={nodeRef}
+                                timeout={300}
+                                classNames="char__item"
+                            >
+                                <li className={active === id ? "char__item char__item_selected" : "char__item"}
+                                    ref={nodeRef}
+                                    onClick={() => handleClick(id)}>
+                                    <img src={thumbnail} alt={name} />
+                                    <div className="char__name">{name}</div>
+                                </li>
+                            </CSSTransition>
                         );
                     })
                 }
-            </ul>
+            </TransitionGroup>
             <button className="button button__main button__long"
                 disabled={newItemsLoading}
                 style={{ 'display': charEnded ? 'none' : 'block' }}

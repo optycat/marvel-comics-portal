@@ -1,3 +1,4 @@
+import { createRef } from "react";
 import { useHttp } from "../Hooks/http.hook";
 
 const useMarvelServise = () => {
@@ -35,7 +36,8 @@ const useMarvelServise = () => {
             wiki: char.urls[1].url,
             id: char.id,
             comics: char.comics.items,
-            imgNone: imgStatus[imgStatus.length - 1] === 'image_not_available' ? true : false
+            imgNone: imgStatus[imgStatus.length - 1] === 'image_not_available' ? true : false,
+            nodeRef: createRef(null),
         });
     }
     const _intiateComics = (comics) => {
